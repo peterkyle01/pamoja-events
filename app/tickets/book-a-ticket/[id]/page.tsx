@@ -1,18 +1,16 @@
-"use client";
-import { eventsData } from "@/lib/data";
-import { Tevent } from "@/lib/types";
 import Image from "next/image";
-import { useParams } from "next/navigation";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { readEventById, readStorage } from "@/lib/actions/events-action";
+import TicketForm from "@/components/forms/ticket-form";
+import { unstable_noStore as noStore } from "next/cache";
 
-export default function TicketDetails() {
-  const { id } = useParams();
-  const event: Tevent | undefined = eventsData.find(
-    (eventData) => eventData.id === id,
-  );
+export default async function TicketDetails({
+  params,
+}: {
+  params: { id: string };
+}) {
+  noStore();
+  const { id } = params;
+  const event = await readEventById(Number(id));
   if (typeof id === undefined || !event) {
     return (
       <section className="flex h-[30rem] w-full items-center justify-center">
@@ -20,10 +18,11 @@ export default function TicketDetails() {
       </section>
     );
   }
-
+  const image = await readStorage(event.image);
+  if (!image) return "";
   return (
-    <section className="h-[30rem] w-full  lg:grid lg:grid-cols-2">
-      <div className="flex items-center justify-center py-12">
+    <section className="h-[30rem] w-full lg:grid lg:grid-cols-2">
+      <div className="flex items-center justify-center">
         <div className="mx-auto grid w-[350px] gap-6">
           <div className="grid gap-2 text-center">
             <h1 className="text-3xl font-bold">{event.name}</h1>
@@ -31,50 +30,15 @@ export default function TicketDetails() {
               {event.description}
             </p>
           </div>
-          <div className="grid gap-4">
-            <div className="grid gap-2">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="m@example.com"
-                required
-              />
-            </div>
-            <div className="grid gap-2">
-              <div className="flex items-center">
-                <Label htmlFor="password">Password</Label>
-                <Link
-                  href="/forgot-password"
-                  className="ml-auto inline-block text-sm underline"
-                >
-                  Forgot your password?
-                </Link>
-              </div>
-              <Input id="password" type="password" required />
-            </div>
-            <Button type="submit" className="w-full">
-              Login
-            </Button>
-            <Button variant="outline" className="w-full">
-              Login with Google
-            </Button>
-          </div>
-          <div className="mt-4 text-center text-sm">
-            Don&apos;t have an account?{" "}
-            <Link href="#" className="underline">
-              Sign up
-            </Link>
-          </div>
+          <TicketForm event={event} />
         </div>
       </div>
-      <div className="hidden bg-muted lg:block">
+      <div className="relative hidden bg-muted lg:block">
         <Image
-          src={event.image}
-          alt={event.image}
-          width="1920"
-          height="1080"
-          className="h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
+          src={image}
+          alt={image}
+          fill
+          className="object-cover dark:brightness-[0.2] dark:grayscale"
         />
       </div>
     </section>

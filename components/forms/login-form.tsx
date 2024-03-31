@@ -14,7 +14,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { logInFormSchema } from "@/lib/utils";
 import { TlogIn } from "@/lib/types";
-import { signInWithEmailAndPassword } from "@/lib/actions/auth";
+import { signInWithEmailAndPassword } from "@/lib/actions/auth-action";
 import { toast } from "sonner";
 
 export default function LoginForm() {

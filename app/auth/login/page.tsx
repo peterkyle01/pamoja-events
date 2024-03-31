@@ -1,5 +1,5 @@
 import LoginForm from "@/components/forms/login-form";
-import { useAuth } from "@/lib/actions/auth";
+import { useAuth } from "@/lib/actions/auth-action";
 import { redirect } from "next/navigation";
 import { unstable_noStore as noStore } from "next/cache";
 

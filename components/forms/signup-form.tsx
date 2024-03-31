@@ -14,7 +14,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { signUpFormSchema } from "@/lib/utils";
 import { TsignUp } from "@/lib/types";
-import { signUpWithEmailAndPassword } from "@/lib/actions/auth";
+import { signUpWithEmailAndPassword } from "@/lib/actions/auth-action";
 import { toast } from "sonner";
 
 export default function SignupForm() {

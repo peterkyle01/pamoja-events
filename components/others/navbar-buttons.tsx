@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { Button } from "../ui/button";
-import { logOut } from "@/lib/actions/auth";
+import { logOut } from "@/lib/actions/auth-action";
 import { useRouter } from "next/navigation";
 import { Session } from "@supabase/supabase-js";
 

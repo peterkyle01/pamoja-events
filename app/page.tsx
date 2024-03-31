@@ -3,18 +3,11 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { FaCheck } from "react-icons/fa";
-import { useAuth } from "@/lib/actions/auth";
-import { redirect } from "next/navigation";
-import { unstable_noStore as noStore } from "next/cache";
+import { useAuth, useCurrentUser } from "@/lib/actions/auth-action";
 
 export default async function Home() {
-  noStore();
-  const {
-    data: { session },
-  } = await useAuth();
-  if (!session) {
-    redirect("/auth/login");
-  }
+  const user = await useCurrentUser()
+  console.log({ hello: user });
   return (
     <>
       <section className="mt-20 flex h-[30rem] w-full flex-col md:flex-row">

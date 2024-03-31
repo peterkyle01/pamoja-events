@@ -5,34 +5,38 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { unstable_noStore as noStore } from "next/cache";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Tticket } from "@/lib/types";
+import { Tevent, Tticket } from "@/lib/types";
 import Image from "next/image";
 import { FaTicketAlt } from "react-icons/fa";
 import { MdDateRange } from "react-icons/md";
+import { readEvents, readStorage } from "@/lib/actions/events-action";
 
 function TicketSkeleton() {
   return <Skeleton className="h-full w-full" />;
 }
 
-function Ticket({ ticket }: { ticket: Tticket }) {
+async function Ticket({ event }: { event: Tevent }) {
+  noStore();
+  const image = await readStorage(event.image);
   return (
-    <Link href={`/tickets/book-a-ticket/${ticket.id}`} key={ticket.id}>
+    <Link href={`/tickets/book-a-ticket/${event.id}`} key={event.id}>
       <div className="group h-60 w-full rounded-md border shadow-md duration-500 hover:scale-105">
         <div className="relative h-3/4 w-full overflow-hidden ">
           <Image
-            src={ticket.image}
+            src={image as string}
             fill
-            alt={ticket.image}
-            className="duration-500 group-hover:scale-110"
+            alt={event.image}
+            className="object-cover duration-500 group-hover:scale-110"
           />
         </div>
         <div className="grid h-1/4 w-full p-2">
           <p className="flex items-center gap-2 font-bold tracking-wider text-pm_blue">
             <FaTicketAlt />
-            {ticket.name}
+            {event.name}
           </p>
           <p className="flex items-center gap-2 text-sm tracking-tighter text-pm_brown">
-            <MdDateRange size={18} /> {ticket.date.toDateString()}
+            <MdDateRange size={18} />{" "}
+            {new Date(event.date_and_time).toDateString()}
           </p>
         </div>
       </div>
@@ -40,8 +44,9 @@ function Ticket({ ticket }: { ticket: Tticket }) {
   );
 }
 
-export default function BookATicket() {
+export default async function BookATicket() {
   noStore();
+  const events = await readEvents();
   return (
     <>
       <h1 className="my-2 text-center text-4xl font-black text-pm_brown">
@@ -57,9 +62,9 @@ export default function BookATicket() {
           <Button>Search</Button>
         </div>
         <div className="my-2 grid grow grid-cols-2 gap-2 overflow-hidden overflow-y-scroll px-2 md:grid-cols-6">
-          {ticketsData.map((ticketData) => (
-            <Suspense fallback={<TicketSkeleton />} key={ticketData.id}>
-              <Ticket ticket={ticketData} />
+          {events?.map((event) => (
+            <Suspense fallback={<TicketSkeleton />} key={event.id}>
+              <Ticket event={event} />
             </Suspense>
           ))}
         </div>

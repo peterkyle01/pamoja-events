@@ -7,7 +7,7 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export const eventFormSchema = z.object({
-  id: z.string(),
+  id: z.number().optional(),
   name: z.string().min(2, { message: "Name must be at least 2 characters" }),
   image: z.string(),
   description: z
@@ -15,8 +15,7 @@ export const eventFormSchema = z.object({
     .min(2, { message: "Must be more than 2 characters" })
     .max(100, { message: "Must be less than 100 characters" }),
   location: z.string().min(1, { message: "Location is required" }),
-  date: z.date(),
-  time: z.string(),
+  date_and_time: z.date(),
   regular_tickets: z.string().transform((regular) => Number(regular) || 0),
   vip_tickets: z.string().transform((vip) => Number(vip) || 0),
   vvip_tickets: z.string().transform((vvip) => Number(vvip) || 0),
@@ -24,19 +23,13 @@ export const eventFormSchema = z.object({
 });
 
 export const ticketFormSchema = z.object({
-  id: z.string(),
+  id: z.number().optional(),
   name: z.string().min(2, { message: "Name must be at least 2 characters" }),
   email: z.string().email({ message: "Write correct email format" }),
-  image: z.string(),
-  phone_number: z
-    .number()
-    .min(700000000, {
-      message: "Missing some numbers.",
-    })
-    .max(799999999, { message: "Too many numbers" }),
-  date: z.date(),
+  phone_number: z.string().transform((vip) => Number(vip) || 0),
+  date_and_time: z.date(),
   type: z.enum(["REGULAR", "VIP", "VVIP"]),
-  event_id: z.string(),
+  event_id: z.number(),
 });
 
 export const signUpFormSchema = z

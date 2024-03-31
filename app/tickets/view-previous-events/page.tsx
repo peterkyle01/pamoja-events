@@ -5,6 +5,8 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { IoLocationOutline } from "react-icons/io5";
 import { LuTimer } from "react-icons/lu";
+import { unstable_noStore as noStore } from "next/cache";
+import { readEvents } from "@/lib/actions/events-action";
 
 function EventSkeleton() {
   return <Skeleton className="h-40 w-full" />;
@@ -23,7 +25,7 @@ function Event({ event }: { event: Tevent }) {
       </div>
       <div className="grid h-full w-1/2">
         <p className="flex items-center gap-2 text-2xl">
-          <LuTimer /> {event.time}
+          <LuTimer /> {new Date(event.date_and_time).toDateString()}
         </p>
         <p className="flex items-center gap-2 text-2xl">
           <IoLocationOutline /> {event.location}
@@ -33,16 +35,18 @@ function Event({ event }: { event: Tevent }) {
   );
 }
 
-export default function ViewPreviousEvents() {
+export default async function ViewPreviousEvents() {
+  noStore();
+  const events = await readEvents();
   return (
     <>
       <h1 className="my-2 text-center text-4xl font-black text-pm_brown">
         View Previous Events
       </h1>
       <section className="grid h-[35rem] w-full grid-cols-1 gap-2 overflow-hidden overflow-y-scroll p-2">
-        {eventsData.map((eventData) => (
-          <Suspense fallback={<EventSkeleton />} key={eventData.id}>
-            <Event event={eventData} />
+        {events?.map((event) => (
+          <Suspense fallback={<EventSkeleton />} key={event.id}>
+            <Event event={event} />
           </Suspense>
         ))}
       </section>

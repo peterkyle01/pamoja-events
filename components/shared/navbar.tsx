@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import Menu from "./menu";
-import { useAuth, useCurrentUser } from "@/lib/actions/auth";
+import { useAuth, useCurrentUser } from "@/lib/actions/auth-action";
 import ContactUs from "../others/contact-us";
 import NavbarButtons from "../others/navbar-buttons";
 import { unstable_noStore as noStore } from "next/cache";

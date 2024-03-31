@@ -4,9 +4,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import ReactDatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-
-import { z } from "zod";
-
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -19,31 +16,41 @@ import {
 import { Input } from "@/components/ui/input";
 import { eventFormSchema } from "@/lib/utils";
 import { toast } from "sonner";
+import { Tevent } from "@/lib/types";
+import { useTransition } from "react";
+import { createEvent } from "@/lib/actions/events-action";
+import ImagePicker from "../others/image-picker";
 
-export default function EventForm() {
-  const form = useForm<z.infer<typeof eventFormSchema>>({
+export default function EventForm({ userId }: { userId: string }) {
+  const [isPending, startTransition] = useTransition();
+
+  const form = useForm<Tevent>({
     resolver: zodResolver(eventFormSchema),
     defaultValues: {
       name: "",
       image: "",
       description: "",
       location: "",
-      date: new Date(),
-      time: "",
+      date_and_time: new Date(),
       regular_tickets: 1,
       vip_tickets: 1,
       vvip_tickets: 1,
+      organizer_id: userId,
     },
   });
 
-  // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof eventFormSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
-    if (form.formState.isSubmitSuccessful) {
-      //   redirect("/tickets");
-    }
+  function onSubmit(values: Tevent) {
+    startTransition(async () => {
+      try {
+        const result = await createEvent(values);
+        const { error } = JSON.parse(result);
+        if (error) toast.error(`${error}`);
+        else toast.success("Successful!");
+        console.log(values);
+      } catch (e) {
+        console.log(e);
+      }
+    });
   }
   return (
     <Form {...form}>
@@ -68,21 +75,16 @@ export default function EventForm() {
             </FormItem>
           )}
         />
-        <FormField
+        <Controller
           control={form.control}
           name="image"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Image</FormLabel>
-              <FormControl>
-                <Input
-                  {...field}
-                  type="file"
-                  className="font-bold text-pm_brown"
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
+          render={({ field: { onChange, value } }) => (
+            <ImagePicker
+              uid={userId}
+              url={value}
+              className="h-60 w-full"
+              onUpload={onChange}
+            />
           )}
         />
         <FormField
@@ -121,7 +123,7 @@ export default function EventForm() {
         />
         <Controller
           control={form.control}
-          name="date"
+          name="date_and_time"
           render={({ field: { onChange, onBlur, value } }) => (
             <div className="flex flex-col gap-2">
               <FormLabel>Date</FormLabel>
@@ -195,9 +197,8 @@ export default function EventForm() {
             )}
           />
         </div>
-
-        <Button type="submit">
-          {form.formState.isSubmitting ? "Listing ..." : "List Event"}
+        <Button type="submit" disabled={isPending}>
+          {isPending ? "Listing ..." : "List Event"}
         </Button>
       </form>
     </Form>
