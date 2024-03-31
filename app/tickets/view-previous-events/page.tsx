@@ -1,5 +1,4 @@
 import { Skeleton } from "@/components/ui/skeleton";
-import { eventsData } from "@/lib/data";
 import { Tevent } from "@/lib/types";
 import Link from "next/link";
 import { Suspense } from "react";

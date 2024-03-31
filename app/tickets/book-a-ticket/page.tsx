@@ -1,6 +1,5 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ticketsData } from "@/lib/data";
 import Link from "next/link";
 import { Suspense } from "react";
 import { unstable_noStore as noStore } from "next/cache";
