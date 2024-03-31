@@ -1,4 +1,4 @@
-import { useCurrentUser } from "@/lib/actions/auth";
+import { useCurrentUser } from "@/lib/actions/auth-action";
 import { redirect } from "next/navigation";
 
 export default async function Admin() {

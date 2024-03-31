@@ -3,11 +3,10 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { FaCheck } from "react-icons/fa";
-import { useAuth, useCurrentUser } from "@/lib/actions/auth-action";
+import { BsQrCode, BsTicketPerforated } from "react-icons/bs";
+import { RiCustomerService2Line } from "react-icons/ri";
 
 export default async function Home() {
-  const user = await useCurrentUser()
-  console.log({ hello: user });
   return (
     <>
       <section className="mt-20 flex h-[30rem] w-full flex-col md:flex-row">
@@ -40,7 +39,7 @@ export default async function Home() {
               Verifiability
             </p>
             <span className="text-4xl md:text-7xl">
-              <FaCheck color="white" />
+              <BsQrCode color="white" />
             </span>
             <p className="text-center text-xs font-bold text-white md:text-xl">
               Each ticket is assigned a unique QR code so you never have to
@@ -52,7 +51,7 @@ export default async function Home() {
               Resell your tickets
             </p>
             <span className="text-4xl md:text-7xl">
-              <FaCheck color="white" />
+              <BsTicketPerforated color="white" />
             </span>
             <p className="text-center text-xs font-bold text-white md:text-xl">
               You can easily put your ticket up for sale incase of an emergency.
@@ -63,7 +62,7 @@ export default async function Home() {
               Customer centered
             </p>
             <span className="text-4xl md:text-7xl">
-              <FaCheck color="white" />
+              <RiCustomerService2Line color="white" />
             </span>
             <p className="text-center text-xs font-bold text-white md:text-xl">
               We always think about you as we create our systems.
