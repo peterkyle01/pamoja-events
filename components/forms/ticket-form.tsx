@@ -27,7 +27,7 @@ import { useTransition } from "react";
 import { createTickets } from "@/lib/actions/tickets-action";
 import { toast } from "sonner";
 
-export default function TicketForm({ event }: { event: Tevent }) {
+export default function TicketForm({ event,user_id }: { event: Tevent ,user_id:string}) {
   const [isPending, startTransition] = useTransition();
   const form = useForm<Tticket>({
     resolver: zodResolver(ticketFormSchema),
@@ -38,6 +38,7 @@ export default function TicketForm({ event }: { event: Tevent }) {
       date_and_time: new Date(event.date_and_time),
       type: "REGULAR",
       event_id: event.id,
+      user_id: user_id,
     },
   });
 
@@ -45,6 +46,7 @@ export default function TicketForm({ event }: { event: Tevent }) {
     startTransition(async () => {
       try {
         const result = await createTickets(values);
+        console.log({ "result is ": result });
         const { error } = JSON.parse(result);
         if (error) toast.error(`${error}`);
         else toast.success("Successful!");

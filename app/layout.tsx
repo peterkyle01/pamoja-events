@@ -22,9 +22,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <Navbar />
-        <main className="relative mx-auto my-4 h-auto max-w-screen-xl">
-          {children}
-        </main>
+        <main className="relative mx-auto my-4 h-auto md:px-2">{children}</main>
         <Footer />
         <Toaster richColors />
       </body>

@@ -6,6 +6,8 @@ import { IoLocationOutline } from "react-icons/io5";
 import { LuTimer } from "react-icons/lu";
 import { unstable_noStore as noStore } from "next/cache";
 import { readEvents } from "@/lib/actions/events-action";
+import { readTickets } from "@/lib/actions/tickets-action";
+import { useAuth } from "@/lib/actions/auth-action";
 
 function EventSkeleton() {
   return <Skeleton className="h-40 w-full" />;
@@ -36,14 +38,24 @@ function Event({ event }: { event: Tevent }) {
 
 export default async function ViewPreviousEvents() {
   noStore();
+  const {
+    data: { session },
+  } = await useAuth();
   const events = await readEvents();
+  const tickets = await readTickets();
+  const eventsForCurrentUser = events?.filter((event) =>
+    tickets?.some(
+      (ticket) =>
+        ticket.event_id === event.id && ticket.user_id === session?.user.id,
+    ),
+  );
   return (
     <>
       <h1 className="my-2 text-center text-4xl font-black text-pm_brown">
         View Previous Events
       </h1>
       <section className="grid h-[35rem] w-full grid-cols-1 gap-2 overflow-hidden overflow-y-scroll p-2">
-        {events?.map((event) => (
+        {eventsForCurrentUser?.map((event) => (
           <Suspense fallback={<EventSkeleton />} key={event.id}>
             <Event event={event} />
           </Suspense>

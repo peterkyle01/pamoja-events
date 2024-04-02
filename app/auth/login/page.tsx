@@ -9,7 +9,7 @@ export default async function Login() {
     data: { session },
   } = await useAuth();
   if (session) {
-    redirect("/");
+    redirect("/tickets");
   }
   return (
     <section className="mt-20 flex h-[30rem] w-full flex-col items-center justify-center ">

@@ -34,7 +34,7 @@ export default function SignupForm() {
   }
 
   if (form.formState.isSubmitSuccessful) {
-    location.reload();
+    location.href="/auth/login";
   }
 
   return (

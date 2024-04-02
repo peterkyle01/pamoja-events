@@ -34,7 +34,7 @@ export default function LoginForm() {
   }
 
   if (form.formState.isSubmitSuccessful) {
-    location.reload();
+    location.href="/tickets";
   }
 
   return (

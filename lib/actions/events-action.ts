@@ -18,6 +18,7 @@ export async function readEvents(): Promise<Tevent[] | null> {
   return result.data;
 }
 
+
 export async function readEventById(id: number): Promise<Tevent | null> {
   const supabase = await createSupabaseServerClient();
   const result = await supabase

@@ -11,9 +11,9 @@ export default function About() {
       <h1 className="mt-20 text-center text-4xl font-black text-pm_brown">
         About
       </h1>
-      <section className="h-[50rem] w-full md:h-[45rem]  md:px-20">
-        <div className="flex h-3/4 w-full flex-col gap-2 p-4 font-bold">
-          <div className="grid flex-1 border border-pm_blue bg-pm_brown p-2 text-pm_blue">
+      <section className="h-[50rem] w-full text-white md:h-[45rem]">
+        <div className="flex h-3/4 w-full flex-col gap-2 py-4 font-bold">
+          <div className="grid flex-1 border border-pm_blue bg-pm_brown p-2">
             <p className="text-center text-2xl">Founded In:</p>
             <p className="text-xs md:text-base">
               Pamoja Events,headquartered in Nairobi county,is an
@@ -27,7 +27,7 @@ export default function About() {
               passionate employees.
             </p>
           </div>
-          <div className="grid flex-1 border border-pm_brown bg-pm_blue p-2 text-pm_brown">
+          <div className="grid flex-1 border border-pm_brown bg-pm_blue p-2">
             <p className="text-center text-2xl">Mission:</p>
             <p className="text-xs md:text-base">
               At Pamoja Events,our mission is to curate and execute exceptional
@@ -37,7 +37,7 @@ export default function About() {
               satisfaction.
             </p>
           </div>
-          <div className="grid flex-1 border border-pm_blue bg-pm_brown p-2 text-pm_blue">
+          <div className="grid flex-1 border border-pm_blue bg-pm_brown p-2">
             <p className="text-center text-2xl">Vision Statement:</p>
             <p className="text-xs md:text-base">
               Our vision at Pamoja Events is to be the premier choice for event

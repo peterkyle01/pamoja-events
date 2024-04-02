@@ -2,6 +2,7 @@ import Image from "next/image";
 import { readEventById, readStorage } from "@/lib/actions/events-action";
 import TicketForm from "@/components/forms/ticket-form";
 import { unstable_noStore as noStore } from "next/cache";
+import { useAuth } from "@/lib/actions/auth-action";
 
 export default async function TicketDetails({
   params,
@@ -11,6 +12,7 @@ export default async function TicketDetails({
   noStore();
   const { id } = params;
   const event = await readEventById(Number(id));
+  const {data:{session}} = await useAuth()
   if (typeof id === undefined || !event) {
     return (
       <section className="flex h-[30rem] w-full items-center justify-center">
@@ -30,7 +32,7 @@ export default async function TicketDetails({
               {event.description}
             </p>
           </div>
-          <TicketForm event={event} />
+          <TicketForm event={event} user_id={session?.user.id!}/>
         </div>
       </div>
       <div className="relative hidden bg-muted lg:block">

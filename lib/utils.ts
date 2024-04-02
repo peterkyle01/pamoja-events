@@ -30,6 +30,7 @@ export const ticketFormSchema = z.object({
   date_and_time: z.date(),
   type: z.enum(["REGULAR", "VIP", "VVIP"]),
   event_id: z.number(),
+  user_id:z.string()
 });
 
 export const signUpFormSchema = z
