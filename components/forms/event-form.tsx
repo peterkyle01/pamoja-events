@@ -43,6 +43,7 @@ export default function EventForm({ userId }: { userId: string }) {
     startTransition(async () => {
       try {
         const result = await createEvent(values);
+        console.log(result);
         const { error } = JSON.parse(result);
         if (error) toast.error(`${error}`);
         else toast.success("Successful!");
